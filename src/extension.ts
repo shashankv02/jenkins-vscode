@@ -21,6 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.showInformationMessage('Hello World from Jenkins in VSCode!');
 	});
 
+	vscode.commands.registerCommand("jenkins.open", name => vscode.commands.executeCommand("vscode.open", vscode.Uri.parse(`https://healthbot-ci.juniper.net/job/${name}`)));
 	const jenkinsJobsProvider = new JenkinsJobsProvider();
 	vscode.window.registerTreeDataProvider('jenkins-view', jenkinsJobsProvider);
 

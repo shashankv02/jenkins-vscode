@@ -10,7 +10,8 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:jenkins-in-vscode.helloWorld"
+		"onCommand:jenkins-in-vscode.helloWorld",
+		"onView:jenkins-view"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
