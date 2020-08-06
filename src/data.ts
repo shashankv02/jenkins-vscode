@@ -1,4 +1,6 @@
 import * as vscode from 'vscode';
+import {get_all_jobs_in_view} from './jenkins/jenkins';
+
 
 export class JenkinsJobsProvider implements vscode.TreeDataProvider<Job> {
     constructor() {}
@@ -8,7 +10,8 @@ export class JenkinsJobsProvider implements vscode.TreeDataProvider<Job> {
     }
 
     getChildren(element?: Job): Thenable<Job[]> {
-        return Promise.resolve([new Job("test", vscode.TreeItemCollapsibleState.Collapsed)]);
+        return get_all_jobs_in_view('.Dev Jobs').then(
+            (jobs: any) => jobs.map(job => new Job(job.name, vscode.TreeItemCollapsibleState.Collapsed)));
     }
 }
 

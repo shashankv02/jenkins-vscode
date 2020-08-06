@@ -21,13 +21,13 @@
 			}
 		],
 		"viewsContainers": {
-            "activitybar": [
-                {
-                    "id": "jenkins-view",
-                    "title": "Jenkins",
-                    "icon": "media/dep.svg"
-                }
-            ]
+			"activitybar": [
+				{
+					"id": "jenkins-view",
+					"title": "Jenkins",
+					"icon": "media/dep.svg"
+				}
+			]
 		},
 		"views": {
 			"jenkins-view": [
@@ -37,12 +37,12 @@
 				}
 			]
 		},
-        "viewsWelcome": [
-            {
-                "view": "jenkins-view",
-                "contents": "Welcome"
-            }
-        ]
+		"viewsWelcome": [
+			{
+				"view": "jenkins-view",
+				"contents": "Welcome"
+			}
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
@@ -64,5 +64,8 @@
 		"mocha": "^7.1.2",
 		"typescript": "^3.8.3",
 		"vscode-test": "^1.3.0"
+	},
+	"dependencies": {
+		"jenkins-api": "^0.3.1"
 	}
 }
