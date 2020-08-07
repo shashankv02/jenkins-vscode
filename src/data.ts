@@ -22,14 +22,16 @@ export class JenkinsJobsProvider implements vscode.TreeDataProvider<Job> {
             return get_all_jobs_in_view('.Dev Jobs').then(
                 (jobs: any) => jobs.map(job => new Job(job.name, job.name, vscode.TreeItemCollapsibleState.Collapsed)));
         }
-        if (element.label === "Build") {
-            vscode.window.showInformationMessage("Building");
-            return Promise.resolve([]);
-        }
-        return Promise.resolve([this.FinalItem("Build", element.label, {
+        return Promise.resolve([
+            this.FinalItem("Open in Browser", element.label, {
             command: 'jenkins.open',
             title: '',
-            arguments: [element.jobname]})]);
+            arguments: [element.jobname]}),
+            this.FinalItem("Build", element.label, {
+                command: 'jenkins.build',
+                title: '',
+                arguments: [element.jobname]})
+        ]);
     }
 }
 

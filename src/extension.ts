@@ -3,7 +3,11 @@
 import * as vscode from 'vscode';
 
 import {JenkinsJobsProvider, Job} from './data';
+import {build as buildCmd} from './commands/build';
 
+function build(job: String) {
+	buildCmd(job);
+}
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -21,7 +25,13 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.showInformationMessage('Hello World from Jenkins in VSCode!');
 	});
 
-	vscode.commands.registerCommand("jenkins.open", name => vscode.commands.executeCommand("vscode.open", vscode.Uri.parse(`https://healthbot-ci.juniper.net/job/${name}`)));
+	// Open in browser command
+	vscode.commands.registerCommand("jenkins.open", name => vscode.commands.executeCommand("vscode.open", vscode.Uri.parse(`https://healthbot-ci.juniper.net/job/${name}/build?delay=0sec`)));
+
+	// Build command
+	vscode.commands.registerCommand("jenkins.build", (job) => build(job));
+
+	// Sidebar
 	const jenkinsJobsProvider = new JenkinsJobsProvider();
 	vscode.window.registerTreeDataProvider('jenkins-view', jenkinsJobsProvider);
 
