@@ -11,11 +11,20 @@
 	],
 	"activationEvents": [
 		"onCommand:jenkins-in-vscode.helloWorld",
-		"onView:jenkins-view"
+		"onView:jobs-sub-view",
+		"onView:builds-sub-view"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
+			{
+                "command": "jobs-sub-view.refreshEntry",
+                "title": "Jenkins: Refresh",
+                "icon": {
+					"light": "./media/refresh.svg",
+					"dark": "./media/refresh.svg"
+				}
+            },
 			{
 				"command": "jenkins-in-vscode.helloWorld",
 				"title": "Hello World"
@@ -24,23 +33,36 @@
 		"viewsContainers": {
 			"activitybar": [
 				{
-					"id": "jenkins-view",
+					"id": "jenkins-main-view",
 					"title": "Jenkins",
 					"icon": "media/dep.svg"
 				}
 			]
 		},
-		"views": {
-			"jenkins-view": [
+		"menus": {
+			"view/title": [
 				{
-					"id": "jenkins-view",
-					"name": "Jenkins"
+					"command": "jobs-sub-view.refreshEntry",
+					"when": "view == jobs-sub-view",
+					"group": "navigation"
+				}
+			  ]
+		},
+		"views": {
+			"jenkins-main-view": [
+				{
+					"id": "jobs-sub-view",
+					"name": "Jobs"
+				},
+				{
+					"id": "builds-sub-view",
+					"name": "My Builds"
 				}
 			]
 		},
 		"viewsWelcome": [
 			{
-				"view": "jenkins-view",
+				"view": "jenkins-main-view",
 				"contents": "Welcome"
 			}
 		]

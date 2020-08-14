@@ -2,7 +2,8 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
-import {JenkinsJobsProvider, Job} from './data';
+import {JenkinsJobsProvider} from './data/jobs';
+import {JenkinsBuildsProvider} from './data/builds';
 import {build as buildCmd} from './commands/build';
 
 function build(job: String) {
@@ -33,7 +34,12 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Sidebar
 	const jenkinsJobsProvider = new JenkinsJobsProvider();
-	vscode.window.registerTreeDataProvider('jenkins-view', jenkinsJobsProvider);
+	vscode.window.registerTreeDataProvider('jobs-sub-view', jenkinsJobsProvider);
+	vscode.commands.registerCommand('jobs-sub-view.refreshEntry', () =>
+    	jenkinsJobsProvider.refresh()
+  	);
+	const jenkinsBuildsProvider = new JenkinsBuildsProvider();
+	vscode.window.registerTreeDataProvider('builds-sub-view', jenkinsBuildsProvider);
 
 	context.subscriptions.push(disposable);
 }
