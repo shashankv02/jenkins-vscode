@@ -3,45 +3,64 @@
 import * as vscode from 'vscode';
 
 import {JenkinsJobsProvider} from './data/jobs';
-import {JenkinsBuildsProvider} from './data/builds';
 import {build as buildCmd} from './commands/build';
+import {Jenkins} from './jenkins/jenkins';
 
-function build(job: String) {
-	buildCmd(job);
+var jenkinsUrlConfig = "jenkins.url";
+
+function build(jenkins, job: String) {
+	buildCmd(jenkins, job);
 }
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+
+function initializeJenkinsFromConfig(jenkins) {
+	console.log("Configuring Jenkins URL");
+	let url = vscode.workspace.getConfiguration().get(jenkinsUrlConfig);
+	jenkins.reinit(url);
+}
+
+function configureJenkinsURL() {
+	let msg = "URL to connect to Jenkins";
+	let placeholder = "https://username:password@yourjenkinsurl or https://username:token@yourjenkinsurl";
+	vscode.window.showInputBox({prompt: msg, placeHolder: placeholder}).then(
+		val => {
+			vscode.workspace.getConfiguration().update("jenkins.url", val, vscode.ConfigurationTarget.Global);
+		}
+	);
+}
+
 export function activate(context: vscode.ExtensionContext) {
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "jenkins-in-vscode" is now active!');
+	let url: String | undefined = vscode.workspace.getConfiguration().get("jenkins.url");
+	let jenkins;
+	if (url === undefined || url === "") {
+		console.log("URL not configured");
+		jenkins = new Jenkins("");
+	} else {
+		jenkins = new Jenkins(url);
+	}
+	console.log('jenkins-in-vscode" is now active!');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('jenkins-in-vscode.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Jenkins in VSCode!');
+	// Subscribe to config changes
+	vscode.workspace.onDidChangeConfiguration((e) => {
+		if (e.affectsConfiguration(jenkinsUrlConfig)) {
+			initializeJenkinsFromConfig(jenkins);
+		}
 	});
 
 	// Open in browser command
 	vscode.commands.registerCommand("jenkins.open", name => vscode.commands.executeCommand("vscode.open", vscode.Uri.parse(`https://healthbot-ci.juniper.net/job/${name}/build?delay=0sec`)));
 
 	// Build command
-	vscode.commands.registerCommand("jenkins.build", (job) => build(job));
+	vscode.commands.registerCommand("jenkins.build", (job) => build(jenkins, job));
+
+	// Add URL command
+	vscode.commands.registerCommand("jenkins.configureURL", () => configureJenkinsURL());
 
 	// Sidebar
-	const jenkinsJobsProvider = new JenkinsJobsProvider();
+	const jenkinsJobsProvider = new JenkinsJobsProvider(jenkins);
 	vscode.window.registerTreeDataProvider('jobs-sub-view', jenkinsJobsProvider);
 	vscode.commands.registerCommand('jobs-sub-view.refreshEntry', () =>
     	jenkinsJobsProvider.refresh()
   	);
-	const jenkinsBuildsProvider = new JenkinsBuildsProvider();
-	vscode.window.registerTreeDataProvider('builds-sub-view', jenkinsBuildsProvider);
-
-	context.subscriptions.push(disposable);
 }
 
 // this method is called when your extension is deactivated

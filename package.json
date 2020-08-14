@@ -16,6 +16,23 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"configuration": {
+			"title": "Jenkins Configuration",
+			"properties": {
+				"jenkins.view": {
+					"scope": "application",
+					"type": "string",
+					"default": "All",
+					"description": "Display only jobs in the view. Defaults to All jobs"
+				},
+				"jenkins.url": {
+					"scope": "application",
+					"type": "string",
+					"default": "",
+					"description": "URL to connect to Jenkins in the format https://username:password@yourjenkinsurl or https://username:token@yourjenkinsurl"
+				}
+			}
+		},
 		"commands": [
 			{
                 "command": "jobs-sub-view.refreshEntry",
@@ -24,11 +41,11 @@
 					"light": "./media/refresh.svg",
 					"dark": "./media/refresh.svg"
 				}
-            },
+			},
 			{
-				"command": "jenkins-in-vscode.helloWorld",
-				"title": "Hello World"
-			}
+                "command": "jenkins.configureURL",
+                "title": "Jenkins: Configure Jenkins URL"
+            }
 		],
 		"viewsContainers": {
 			"activitybar": [
@@ -53,10 +70,6 @@
 				{
 					"id": "jobs-sub-view",
 					"name": "Jobs"
-				},
-				{
-					"id": "builds-sub-view",
-					"name": "My Builds"
 				}
 			]
 		},
