@@ -2,7 +2,7 @@
 	"name": "jenkins-in-vscode",
 	"displayName": "Jenkins in VSCode",
 	"description": "Run Jenkins jobs from vscode",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"engines": {
 		"vscode": "^1.47.0"
 	},
