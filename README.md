@@ -9,10 +9,6 @@ Supports filtering jobs by views
 
 Supports parameter inputs
 
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
 ## Extension Settings
 
 This extension contributes the following settings:
@@ -21,9 +17,19 @@ This extension contributes the following settings:
 * `jenkins.view`: (Optional) By default, all jobs will be listed. Specifying a view will list only jobs belonging to the view.
 
 
+# Notes
+
+Extension has only been tested with pipeline jobs with parameters. It may work with other types of jobs as well but it is not tested.
+Feel free to open a github issue if there is a problem.
+
 ## Release Notes
 
 
-### 1.0.0
+### 0.0.1
 
 Initial release
+
+
+### 0.0.2
+
+Minor doc fix
