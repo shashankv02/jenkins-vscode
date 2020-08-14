@@ -7,6 +7,7 @@ import {build as buildCmd} from './commands/build';
 import {Jenkins} from './jenkins/jenkins';
 
 var jenkinsUrlConfig = "jenkins.url";
+var jenkinsViewConfig = "jenkins.view";
 
 function build(jenkins, job: String) {
 	buildCmd(jenkins, job);
@@ -15,21 +16,31 @@ function build(jenkins, job: String) {
 function initializeJenkinsFromConfig(jenkins) {
 	console.log("Configuring Jenkins URL");
 	let url = vscode.workspace.getConfiguration().get(jenkinsUrlConfig);
-	jenkins.reinit(url);
+	jenkins.init(url);
 }
 
 function configureJenkinsURL() {
-	let msg = "URL to connect to Jenkins";
+	let msg = "Enter URL to connect to Jenkins";
 	let placeholder = "https://username:password@yourjenkinsurl or https://username:token@yourjenkinsurl";
 	vscode.window.showInputBox({prompt: msg, placeHolder: placeholder}).then(
 		val => {
-			vscode.workspace.getConfiguration().update("jenkins.url", val, vscode.ConfigurationTarget.Global);
+			vscode.workspace.getConfiguration().update(jenkinsUrlConfig, val, vscode.ConfigurationTarget.Global);
+		}
+	);
+}
+
+function configureJenkinsView() {
+	let msg = "Enter Jenkins view name";
+	let placeholder = "All";
+	vscode.window.showInputBox({prompt: msg, placeHolder: placeholder}).then(
+		val => {
+			vscode.workspace.getConfiguration().update(jenkinsViewConfig, val, vscode.ConfigurationTarget.Global);
 		}
 	);
 }
 
 export function activate(context: vscode.ExtensionContext) {
-	let url: String | undefined = vscode.workspace.getConfiguration().get("jenkins.url");
+	let url: String | undefined = vscode.workspace.getConfiguration().get(jenkinsUrlConfig);
 	let jenkins;
 	if (url === undefined || url === "") {
 		console.log("URL not configured");
@@ -52,8 +63,11 @@ export function activate(context: vscode.ExtensionContext) {
 	// Build command
 	vscode.commands.registerCommand("jenkins.build", (job) => build(jenkins, job));
 
-	// Add URL command
+	// Configure URL command
 	vscode.commands.registerCommand("jenkins.configureURL", () => configureJenkinsURL());
+
+	// Configure View command
+	vscode.commands.registerCommand("jenkins.configureView", () => configureJenkinsView());
 
 	// Sidebar
 	const jenkinsJobsProvider = new JenkinsJobsProvider(jenkins);

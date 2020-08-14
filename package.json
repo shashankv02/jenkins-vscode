@@ -45,6 +45,10 @@
 			{
                 "command": "jenkins.configureURL",
                 "title": "Jenkins: Configure Jenkins URL"
+			},
+			{
+                "command": "jenkins.configureView",
+                "title": "Jenkins: Configure Jenkins View"
             }
 		],
 		"viewsContainers": {
