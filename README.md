@@ -22,8 +22,11 @@ This extension contributes the following settings:
 Extension has only been tested with pipeline jobs with parameters. It may work with other types of jobs as well but it is not tested.
 Feel free to open a github issue if there is a problem.
 
-## Release Notes
+## Known Issues
 
+CSRF Protection on jenkins must be disabled for the extension to be able to make API calls to Jenkins.
+
+## Release Notes
 
 ### 0.0.1
 
@@ -33,3 +36,7 @@ Initial release
 ### 0.0.2
 
 Minor doc fix
+
+### 0.0.3
+
+Reduce extension size using webpack
