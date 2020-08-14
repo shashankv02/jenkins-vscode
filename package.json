@@ -2,7 +2,7 @@
 	"name": "jenkins-in-vscode",
 	"displayName": "Jenkins in VSCode",
 	"description": "Run Jenkins jobs from vscode",
-	"version": "0.0.3",
+	"version": "0.0.5",
 	"engines": {
 		"vscode": "^1.47.0"
 	},
@@ -10,11 +10,9 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:jenkins-in-vscode.helloWorld",
-		"onView:jobs-sub-view",
-		"onView:builds-sub-view"
+		"onView:jobs-sub-view"
 	],
-	"main": "./out/extension.js",
+	"main": "./dist/extension",
 	"contributes": {
 		"configuration": {
 			"title": "Jenkins Configuration",

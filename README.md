@@ -37,6 +37,6 @@ Initial release
 
 Minor doc fix
 
-### 0.0.3
+### 0.0.3, 0.0.4, 0.0.5
 
 Reduce extension size using webpack
