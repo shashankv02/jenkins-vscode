@@ -56,7 +56,7 @@
 				{
 					"id": "jenkins-main-view",
 					"title": "Jenkins",
-					"icon": "media/dep.svg"
+					"icon": "media/icon.svg"
 				}
 			]
 		},

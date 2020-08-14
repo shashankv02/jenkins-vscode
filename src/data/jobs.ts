@@ -30,7 +30,7 @@ export class JenkinsJobsProvider implements vscode.TreeDataProvider<Job> {
     }
     getChildren(element?: Job): Thenable<Job[]> {
         if (this.jenkins === undefined || this.jenkins.url === "") {
-            vscode.window.showInformationMessage('Please configure Jenkins URL in settings');
+            vscode.window.showInformationMessage('[Click here to configure Jenkins URL](command:jenkins.configureURL)');
             return Promise.resolve([]);
         }
         if (!element) {
