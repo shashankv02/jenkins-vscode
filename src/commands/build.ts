@@ -11,15 +11,20 @@ export async function build(jenkins, job) {
         return resolve(result);
     }));
     let paramInputs = await get_parameters(params);
+    if (paramInputs === undefined) {
+        // User might have dismissed the inputs
+        console.log("Cancelling build request");
+        vscode.window.setStatusBarMessage("Not building..", 2000);
+        return;
+    }
     try {
-        let buildSubmission = await jenkins.build_with_params(job, paramInputs);
+        let buildSubmissionPromise = jenkins.build_with_params(job, paramInputs);
+        vscode.window.setStatusBarMessage("Starting build..", buildSubmissionPromise);
+        let buildSubmission = await buildSubmissionPromise;
         console.log(buildSubmission);
         if (buildSubmission["statusCode"] === 201) {
             vscode.window.showInformationMessage("Started build successfully");
         }
-        let queueId = buildSubmission["queueId"];
-        let buildDetails = await jenkins.get_queue_item(queueId);
-        console.log(buildDetails);
     } catch (err) {
         console.log(err);
     }

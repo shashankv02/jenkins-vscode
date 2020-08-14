@@ -10,6 +10,10 @@ export async function get_parameters(config) {
 
     for (const [key, value] of Object.entries(params)) {
         let inputs = await get_string_param_inputs(value);
+        if (inputs === undefined) {
+            // User dismissed inputs
+            return undefined;
+        }
         switch(key) {
             case stringParam:
                 userInputs = {...userInputs, ...inputs};
@@ -28,7 +32,12 @@ async function get_string_param_inputs(params) {
         let name = param.name[0];
         let defaultValue = param.defaultValue;
         let description = param.description;
-        results[name] = await get_string_input(name, description, defaultValue);
+        let userInput = await get_string_input(name, description, defaultValue);
+        // Check if user dismissed the input box
+        if (userInput === undefined) {
+            return undefined;
+        }
+        results[name] = userInput;
     }
     return results;
 }
