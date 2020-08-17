@@ -5,12 +5,24 @@ import * as vscode from 'vscode';
 export async function build(jenkins, job) {
     let configPromise = jenkins.get_job_xml(job);
     vscode.window.setStatusBarMessage("Getting build parameters", configPromise);
-    let config = await configPromise;
+    try {
+        var config = await configPromise;
+    } catch(e) {
+        vscode.window.showErrorMessage(e);
+        return;
+    }
+
     let params = await new Promise((resolve, reject) => parseString(config, (err, result) => {
         if (err) { return reject(err); }
         return resolve(result);
     }));
-    let paramInputs = await get_parameters(params);
+    let paramInputs;
+    try {
+        paramInputs = await get_parameters(params);
+    } catch(e) {
+        vscode.window.showErrorMessage(e);
+    }
+
     if (paramInputs === undefined) {
         // User might have dismissed the inputs
         console.log("Cancelling build request");
@@ -24,8 +36,12 @@ export async function build(jenkins, job) {
         console.log(buildSubmission);
         if (buildSubmission["statusCode"] === 201) {
             vscode.window.showInformationMessage("Started build successfully");
+        } else if (buildSubmission['statusCode'] === 403) {
+            vscode.window.showErrorMessage("Forbidden");
+        } else {
+            vscode.window.showErrorMessage(buildSubmission["statusCode"]);
         }
     } catch (err) {
-        console.log(err);
+        console.log("Err", err);
     }
 }
