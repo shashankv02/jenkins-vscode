@@ -44,3 +44,7 @@ Reduce extension size using webpack
 ### 0.0.6
 
 Pressing escape or clicking outside the input box now cancels the build creation
+
+### 0.0.7, 0.0.8, 0.0.9
+
+Show error messages when API calls fail
