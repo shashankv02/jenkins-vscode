@@ -2,9 +2,9 @@
 	"name": "jenkins-in-vscode",
 	"displayName": "Jenkins in VSCode",
 	"description": "Run Jenkins jobs from vscode",
-	"version": "0.0.7",
+	"version": "0.0.8",
 	"engines": {
-		"vscode": "^1.47.0"
+		"vscode": "^1.40.0"
 	},
 	"categories": [
 		"Other"
@@ -103,7 +103,7 @@
 		"@types/glob": "^7.1.1",
 		"@types/mocha": "^7.0.2",
 		"@types/node": "^13.11.0",
-		"@types/vscode": "^1.47.0",
+		"@types/vscode": "^1.40.0",
 		"@typescript-eslint/eslint-plugin": "^2.30.0",
 		"@typescript-eslint/parser": "^2.30.0",
 		"eslint": "^6.8.0",
